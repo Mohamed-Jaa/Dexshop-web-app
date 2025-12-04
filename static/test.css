@@ -82,7 +82,7 @@ section h2{
 }
 .price button{
     position: relative;
-    bottom: 17px;
+    bottom: 16px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;

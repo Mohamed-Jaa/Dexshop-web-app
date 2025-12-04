@@ -2,6 +2,7 @@ from flask import Flask, render_template , url_for , request, redirect, session 
 import json
 from werkzeug.security import generate_password_hash, check_password_hash 
 from math import ceil
+
 app = Flask(__name__)
 
 app.debug = True
