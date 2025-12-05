@@ -1363,16 +1363,24 @@ button{
 
 
 .close-btn {
-    background: none;
+    background: transparent; 
     border: none;
-    font-size: 1.8rem;
-    color: #64748b;
+    font-size: 2rem;       
+    color: #64748b;        
     cursor: pointer;
-    transition: color 0.3s, transform 0.3s;
+    width: 40px;           
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;    
+    transition: all 0.3s ease; 
 }
+
 .close-btn:hover {
-    color: #ef4444;
-    transform: rotate(90deg);
+    color: #ef4444 !important; 
+    background-color: rgba(239, 68, 68, 0.1); 
+    transform: rotate(90deg); 
 }
 
 .sidebar-content {
