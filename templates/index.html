@@ -1,6 +1,6 @@
 {% extends 'main.html' %}
 {%block content%}
-        <h1>Welcome to our Store</h1>
+        <h1 class="big-title">Welcome to our Store</h1>
         <div class="container-pc">
         {%for product in products%}
         <div class="product-card">
@@ -10,6 +10,17 @@
             <p class="price">{{product.price_usd}}</p>
             <p class="{{product.condition|lower}}">{{product.condition}}</p>
             <a href="{{ url_for('product', product_id=product.id)}}">View Details</a>
+            <button class="btn-add-cart" 
+                onclick="addToCart(this)"
+                data-id="{{ product.id }}"
+                data-name="{{ product.name }}"
+                data-price="{{ product.price_usd }}"
+                data-image="{{ product.image_url }}"
+                style="background:#0ea5e9; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">
+                <i class="bi bi-cart-plus"></i>
+            </button>
+            <div class="card-actions" style="display: flex; gap: 10px; margin-top: 10px;">
+        </div>
         </div>
         {%endfor%}
         </div>
@@ -33,7 +44,7 @@
         <!-- end lien de other page -->
         <!-- start about -->
         <div class="about-us">
-            <h1>About Us</h1>
+            <h1 class="big-title">About Us</h1>
             <p>At our store, we are passionate about providing high-quality products and exceptional customer service.
                 Our
                 team is dedicated to ensuring that you find the perfect computer for your needs, whether you're a
@@ -65,7 +76,7 @@
         <!-- end about -->
         <!-- start contact -->
         <div class="contact-head">
-            <h1>Contact Us</h1>
+            <h1 class="big-title">Contact Us</h1>
             <p>Have any questions or feedback? We'd love to hear from you!</p>
         </div>
         <div class="contact">

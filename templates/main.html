@@ -31,24 +31,33 @@
                     <span></span>
                 </span>
                 <ul>
-                    <li><a href="{{ url_for('main') }}">Home</a></li>
-                    <li><a href="{{ url_for('index', page=1) }}">Products</a></li>
-                    <li><a href="{{ url_for('contact')}}">Contact</a></li>
-                    {% if session.get('admin') %}
-                        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-                        {% elif session.get('user') or session.get('admin') %}
-                        <li><a href="{{ url_for('logout') }}" >Logout</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('register') }}">Sign Up</a></li> 
-                        <li><a href="{{ url_for('login') }}" >Login</a></li>
-                    {% endif %}
-                </ul>
+    {% if session.get('user') %}
+        <li class="user-profile-li">
+            <div class="user-badge">
+                <i class="bi bi-person-circle profile-icon"></i>
+                <span class="username-text">Hi, {{ session['user']['username'] }}</span>
+            </div>
+        </li>
+    {% endif %}
+
+    <li><a href="{{ url_for('main') }}">Home</a></li>
+    <li><a href="{{ url_for('index', page=1) }}">Products</a></li>
+    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+    {% if session.get('admin') %}
+        <li><a href="{{ url_for('dashboard') }}">Admin</a></li>
+    {% endif %}
+    {% if session.get('user') %}
+        <li><a href="{{ url_for('logout') }}" class="logout-link">Logout</a></li>
+    {% else %}
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+    {% endif %}
+            </ul>
             </nav>
         </div>
     </header>
     <!--end header -->
     <main>
-        <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="container flash-container">
@@ -60,7 +69,7 @@
                 </div>
             {% endif %}
         {% endwith %}
-    </main>
+
         <!-- start main content -->
         {%block content%}
         <section class="hero">
@@ -150,63 +159,51 @@
     </button>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     </main>
+    <!-- check out sidebar and basket -->
+    <!-- check out sidebar and basket -->
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="checkout-sidebar" id="sidebar">
+    <!-- رأس النافذة (أيقونة الإغلاق فقط في اليسار) -->
+    <div class="sidebar-header">
+        <span class="close-btn" onclick="closeSidebar()">&times;</span>
+    </div>
+    
+    <!-- عنوان السلة (نص عادي) -->
+    <h3 class="cart-title">Your Shopping Cart</h3>
+    
+    <!-- محتوى السلة -->
+    <div class="sidebar-content" id="cart-items-container">
+        <!-- سيتم ملؤه بالجافاسكريبت -->
+    </div>
+
+    <!-- تذييل النافذة (السعر الكلي + نموذج الطلب) -->
+    <div class="sidebar-footer-form">
+        <!-- السعر الكلي -->
+        <div class="summary-totals">
+            <p class="total-line">Total: <span id="finalTotal">0.00 USD</span></p>
+        </div>
+        
+        <!-- نموذج الطلب -->
+        <form id="checkoutForm" onsubmit="submitOrder(event)">
+            <h4 class="form-title">Customer Information</h4>
+            <input type="text" id="customerName" required placeholder="Full Name" class="form-input">
+            <input type="tel" id="customerPhone" required placeholder="Phone Number" class="form-input">
+            <input type="text" id="customerAddress" required placeholder="Shipping Address" class="form-input">
+            
+            <button type="submit" class="submit-btn">
+                <i class="bi bi-send-check"></i> Confirm Order
+            </button>
+        </form>
+    </div>
+</div>
     <footer>
         <p>&copy; 2024 DexShop. All rights reserved.</p>
     </footer>
-    <!-- Checkout Sidebar -->
-    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
-    
-    <div class="checkout-sidebar" id="sidebar">
-        <div class="close-btn" onclick="closeSidebar()">&times;</div>
-        
-        <div class="sidebar-header">
-            <h3>Complete Your Order</h3>
-            <span class="product-id-display">Product ID: <span id="currentProductId">N/A</span></span>
-        </div>
-        
-        <div class="sidebar-content">
-            <div class="product-item">
-                <img id="cart-item-image" src="" alt="Product Image">
-                <div class="item-details">
-                    <h4 id="cart-item-name">Product Name</h4> 
-                    <p class="price-summary" id="cart-item-price">0.00 USD</p>
-                    <div class="quantity-control">
-                        <label for="quantity">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="5">
-                    </div>
-                </div>
-            </div>
-            
-            <form class="checkout-form" onsubmit="submitOrder(event)">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" required placeholder="Your Name">
-                </div>
-                <div class="form-group">
-                    <label>Shipping Address</label>
-                    <textarea required placeholder="Your full address"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" required placeholder="+123...">
-                </div>
-                
-                <div class="summary-totals">
-                    <p>Subtotal: <span id="subtotal">0.00 USD</span></p>
-                    <p>Shipping: <span>Free</span></p>
-                    <p class="total-line">Total: <span id="finalTotal" class="total-price">0.00 USD</span></p>
-                </div>
-                
-                <button type="submit" class="btn-submit" style="width:100%; margin-top:20px;">Confirm & Send Order</button>
-            </form>
-        </div>
+    <div class="floating-cart" onclick="openSidebar()">
+        <i class="bi bi-cart-fill"></i>
+        <span id="cart-count">0</span>
     </div>
-    <script>
-        const isLoggedIn = {{ 'true' if session.get('user') else 'false' }};
-    </script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
 </body>
 
 </html>
