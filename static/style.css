@@ -183,6 +183,11 @@ header .container nav ul li:not(:last-child) a{
         object-fit: contain;
         margin-bottom: 7px;
     }
+    main .big-title {
+        font-size: 40px !important; 
+        letter-spacing: 0px !important;
+        line-height: 1.2;
+    }
 
     .logo {
         width: auto; 
